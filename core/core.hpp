@@ -4,6 +4,4 @@
 #include <iostream>
 
 // stl
-#include <vector>
-#include <array>
-#include <list>
+#include <string>
