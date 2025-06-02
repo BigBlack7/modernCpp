@@ -1,9 +1,12 @@
 #pragma once
+#include <mutex>
+#include <atomic>
 // The declaration and implementation of a template class cannot be separated, otherwise a linking error will occur
 struct ControlBlock
 {
-    int __refCount__; // Reference count
+    std::atomic<int> __refCount__; // Reference count
     ControlBlock() : __refCount__(1) {}
+    // in fact,ptr should be here -> T *mPtr;
 };
 
 template <typename T>
@@ -126,7 +129,7 @@ T &ZSharedPtr<T>::operator*() const
 template <typename T>
 int ZSharedPtr<T>::use_count() const
 {
-    return mControlBlock ? mControlBlock->__refCount__ : 0;
+    return mControlBlock ? mControlBlock->__refCount__.load() : 0;
 }
 
 template <typename T>

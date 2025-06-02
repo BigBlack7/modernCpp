@@ -1,7 +1,4 @@
 #include "core.hpp"
-#include "ptr/zSharedPtr.hpp"
-#include "stl/zArray.hpp"
-#include "memory/zMemoryPool.hpp"
 
 void useZSharedPtr()
 {
@@ -48,9 +45,46 @@ void useZMemoryPool()
     pool.deallocate(ptr2);
 }
 
+void printList(const std::list<int> &lst)
+{
+    for (const auto &elem : lst)
+        std::cout << elem << " ";
+    std::cout << std::endl;
+}
+void useZList()
+{
+    std::list<int> stdList{7, 10};
+    auto stdIt = stdList.begin();
+    stdList.insert(stdIt, 3);
+    stdList.erase(++stdIt);
+    printList(stdList);
+    std::cout << "-----------------------------------" << std::endl;
+    ZList<int> myList;
+    myList.push_back(10);
+    myList.push_front(5);
+    myList.push_back(15);
+    myList.insert(++myList.begin(), 7);
+    myList.print(); // 5 7 10 15
+
+    myList.pop_front();
+    myList.pop_back();
+    myList.print(); // 7 10
+
+    auto it = myList.begin();
+    myList.insert(it, 3);
+    myList.erase(++it);
+    myList.print(); // 3 7
+
+    myList.remove(7);
+    myList.print(); // 3
+
+    myList.clear();
+    myList.print(); // empty
+}
+
 int main()
 {
-    useZSharedPtr();
-    std::cout << "Hello Cpp!" << std::endl;
+    useZList();
+    std::cout << "----Hello, Cpp!----" << std::endl;
     return 0;
 }
