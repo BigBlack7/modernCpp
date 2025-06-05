@@ -82,9 +82,27 @@ void useZList()
     myList.print(); // empty
 }
 
+void useZDeque()
+{
+    ZDeque<std::string> myDeque;
+    myDeque.push_back("Hello");
+    myDeque.push_back("World");
+    myDeque.print(); // Hello World
+
+    myDeque.push_front("C++");
+    myDeque.push_front("Programming");
+    myDeque.print(); // Programming C++ Hello World
+
+    myDeque.pop_front();
+    myDeque.print(); // C++ Hello World
+
+    myDeque.pop_back();
+    myDeque.print(); // C++ Hello
+}
+
 int main()
 {
-    useZList();
+    useZDeque();
     std::cout << "----Hello, Cpp!----" << std::endl;
     return 0;
 }

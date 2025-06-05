@@ -15,21 +15,21 @@ template <typename T>
 class ZList;
 
 template <typename T>
-class ZIterator
+class ZListIterator
 {
 private:
     ZNode<T> *mNodePtr;
     friend class ZList<T>;
 
 public:
-    using self_type = ZIterator<T>;
+    using self_type = ZListIterator<T>;
     using value_type = T;
     using reference = T &;
     using pointer = T *;
     using iterator_category = std::bidirectional_iterator_tag;
     using difference_type = std::ptrdiff_t;
 
-    ZIterator(ZNode<T> *ptr = nullptr) : mNodePtr(ptr) {}
+    ZListIterator(ZNode<T> *ptr = nullptr) : mNodePtr(ptr) {}
 
     // Dereference operator overload
     reference operator*() const { return mNodePtr->__data__; }
@@ -83,8 +83,8 @@ private:
     ZNode<T> *mTail;
 
 public:
-    using iterator = ZIterator<T>;
-    using const_iterator = ZIterator<const T>;
+    using iterator = ZListIterator<T>;
+    using const_iterator = ZListIterator<const T>;
 
     // Default constructor
     ZList()
