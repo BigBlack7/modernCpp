@@ -14,5 +14,6 @@
 #include "stl/zArray.hpp"
 #include "stl/zList.hpp"
 #include "stl/zDeque.hpp"
+#include "stl/zBSTMap.hpp"
 
 #include "memory/zMemoryPool.hpp"

@@ -100,9 +100,25 @@ void useZDeque()
     myDeque.print(); // C++ Hello
 }
 
+void useZBSTMap()
+{
+    ZBSTMap<int, std::string> map;
+    map.insert(150, "apple");
+    map.insert(130, "banana");
+    map.insert(170, "orange");
+    map.insert(165, "peach");
+    map.print();
+    std::cout << "-----------------------------------" << std::endl;
+    map.erase(130);
+    map.print();
+    std::cout << "-----------------------------------" << std::endl;
+    map[150] = "banana";
+    map.print();
+}
+
 int main()
 {
-    useZDeque();
+    useZBSTMap();
     std::cout << "----Hello, Cpp!----" << std::endl;
     return 0;
 }
