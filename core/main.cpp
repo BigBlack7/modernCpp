@@ -116,9 +116,28 @@ void useZBSTMap()
     map.print();
 }
 
+void useZAVLMap()
+{
+    ZAVLMap<int, std::string> map;
+    map.put(150, "apple");
+    map.put(200, "peach");
+    map.put(160, "grape");
+    std::vector<std::pair<int, std::string>> res = map.inorderTraversal();
+    for (auto &p : res)
+    {
+        std::cout << p.first << "=>" << p.second << std::endl;
+    }
+    map.erase(160);
+    std::vector<std::pair<int, std::string>> res1 = map.inorderTraversal();
+    for (auto &p : res1)
+    {
+        std::cout << p.first << "=>" << p.second << std::endl;
+    }
+}
+
 int main()
 {
-    useZBSTMap();
+    useZAVLMap();
     std::cout << "----Hello, Cpp!----" << std::endl;
     return 0;
 }
