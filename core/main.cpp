@@ -135,9 +135,26 @@ void useZAVLMap()
     }
 }
 
+void useZHashMap()
+{
+    ZHashMap<std::string, int> map;
+    map.insert("apple", 3);
+    map.insert("peach", 4);
+    map.insert("orange", 5);
+    for (auto it = map.begin(); it != map.end(); ++it)
+    {
+        std::cout << it->first << "=>" << it->second << std::endl;
+    }
+    std::cout << "-----------------------------------" << std::endl;
+    map.erase("orange");
+    for (auto it = map.begin(); it != map.end(); ++it)
+    {
+        std::cout << it->first << "=>" << it->second << std::endl;
+    }
+}
 int main()
 {
-    useZAVLMap();
+    useZHashMap();
     std::cout << "----Hello, Cpp!----" << std::endl;
     return 0;
 }
