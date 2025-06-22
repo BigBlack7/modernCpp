@@ -152,9 +152,22 @@ void useZHashMap()
         std::cout << it->first << "=>" << it->second << std::endl;
     }
 }
+
+void useTemplate()
+{
+    printTypeIntegral(1);
+    WithFoo wf;
+    // WithoutFoo wof;
+    call_foo(wf);
+    // call_foo(wof);
+
+    TypePrinter<WithValue>::print();
+    TypePrinter<WithoutValue>::print();
+}
+
 int main()
 {
-    useZHashMap();
+    useTemplate();
     std::cout << "----Hello, Cpp!----" << std::endl;
     return 0;
 }
