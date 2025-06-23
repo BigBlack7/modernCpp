@@ -155,14 +155,32 @@ void useZHashMap()
 
 void useTemplate()
 {
-    printTypeIntegral(1);
-    WithFoo wf;
-    // WithoutFoo wof;
-    call_foo(wf);
-    // call_foo(wof);
-
-    TypePrinter<WithValue>::print();
-    TypePrinter<WithoutValue>::print();
+    {
+        // printTypeIntegral(1);
+        // WithFoo wf;
+        // call_foo(wf);
+        // call_foo11(wf);
+        // call_foo20(wf);
+        // // WithoutFoo wof;
+        // // call_foo(wof); error
+        // // call_fooM(wof); error
+        // // call_foo20(wof); error
+        // TypePrinter<WithValue>::print();
+        // TypePrinter<WithoutValue>::print();
+    }
+    {
+        std::cout << "Factorial: " << Factorial<5>::value << std::endl;
+        std::cout << "&Factorial:" << &Factorial<5>::value << std::endl;
+        std::cout << "Variadic Templates: " << sum<1, 2, 3>::value << std::endl;
+        static_assert(is_addable<int>::value, "");
+        if (is_addable<int>::value)
+            std::cout << "int should be addable" << std::endl;
+        if (!is_addable<void *>::value)
+            std::cout << "void* should not be addable" << std::endl;
+        using list = TypeList<int, double, char>;
+        using third_type = typeAt<list, 2>::type;
+        std::cout << "third_type: " << typeid(third_type).name() << std::endl;
+    }
 }
 
 int main()

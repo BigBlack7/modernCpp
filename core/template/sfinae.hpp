@@ -48,6 +48,7 @@ private:
     U *second;
 };
 
+// template variadic
 void printAll()
 {
     std::cout << std::endl;
@@ -79,6 +80,7 @@ typename std::enable_if<std::is_integral<T>::value, void>::type printInt(T t)
     std::cout << t << std::endl;
 }
 
+// modern cpp implement up
 template <typename T>
 concept Integral = std::is_integral_v<T>;
 void printTypeIntegral(Integral auto t)
@@ -86,6 +88,7 @@ void printTypeIntegral(Integral auto t)
     std::cout << typeid(t).name() << "->" << t << std::endl;
 }
 
+// type extract
 template <typename T>
 class has_foo
 {
@@ -114,6 +117,36 @@ typename std::enable_if<has_foo<T>::value, void>::type call_foo(T &obj)
     std::cout << "call_foo" << std::endl;
 }
 
+// c++ 11
+template <typename, typename = std::void_t<>>
+struct has_foo11 : std::false_type
+{
+};
+template <typename T>
+struct has_foo11<T, std::void_t<decltype(std::declval<T>().foo())>> : std::true_type
+{
+};
+
+template <typename T>
+typename std::enable_if<has_foo11<T>::value, void>::type call_foo11(T &obj)
+{
+    obj.foo();
+    std::cout << "call_foo11" << std::endl;
+}
+
+// c++ 20
+template <typename T>
+concept HasFoo = requires(T t) {
+    { t.foo() } -> std::same_as<void>;
+};
+
+template <HasFoo T>
+void call_foo20(T &obj)
+{
+    obj.foo();
+    std::cout << "call_foo20" << std::endl;
+}
+
 class WithFoo
 {
 public:
@@ -129,11 +162,11 @@ class WithoutFoo
 
 // type extract
 template <typename T, typename = void>
-struct has_non_void_value_type:std::false_type
+struct has_non_void_value_type : std::false_type
 {
 };
 template <typename T>
-struct has_non_void_value_type<T,std::enable_if_t<!std::is_void_v<typename T::value_type>>>:std::true_type
+struct has_non_void_value_type<T, std::enable_if_t<!std::is_void_v<typename T::value_type>>> : std::true_type
 {
 };
 template <typename T, bool hasVal = has_non_void_value_type<T>::value>
@@ -164,4 +197,65 @@ struct WithValue
 
 struct WithoutValue
 {
+};
+//----------------------------------------------
+template <int N>
+struct Factorial
+{
+    inline static const int value = N * Factorial<N - 1>::value; // c++ 17 inline
+};
+template <>
+struct Factorial<0>
+{
+    inline static const int value = 1;
+};
+
+// if get the adress of value, and use 'inline',we dont need definition below
+// template<int N>
+// const int Factorial<N>::value;
+
+// Variadic Templates
+template <int... ns>
+struct sum;
+
+template <>
+struct sum<>
+{
+    static const int value = 0;
+};
+
+template <int n, int... ns>
+struct sum<n, ns...>
+{
+    static const int value = n + sum<ns...>::value;
+};
+
+// type addable
+template <typename T, typename = void>
+struct is_addable : std::false_type
+{
+};
+
+template <typename T>
+struct is_addable<T, decltype(void(std::declval<T>() + std::declval<T>()))> : std::true_type
+{
+};
+
+// type trap
+template <typename... Ts>
+struct TypeList
+{
+};
+template <typename List, std::size_t N>
+struct typeAt;
+
+template <typename Head, typename... Tail>
+struct typeAt<TypeList<Head, Tail...>, 0>
+{
+    using type = Head;
+};
+template <typename Head, typename... Tail, std::size_t N>
+struct typeAt<TypeList<Head, Tail...>, N>
+{
+    using type = typename typeAt<TypeList<Tail...>, N - 1>::type;
 };
