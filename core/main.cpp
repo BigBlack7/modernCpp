@@ -183,9 +183,35 @@ void useTemplate()
     }
 }
 
+void useJson()
+{
+    using Json = nlohmann::json;
+    Json j = {
+        {"pi", 3.141},
+        {"happy", true},
+        {"name", "Niels"},
+        {"nothing", nullptr},
+        {"answer", {{"everything", 42}}},
+        {"list", {1, 0, 2}},
+        {"object", {{"currency", "USD"}, {"value", 42.99}}}};
+    std::cout << "j: " << j.dump() << std::endl;
+
+    Json oArray = {1, 2, 3};
+    Json oInt = 1;
+    Json oString = "hello";
+
+    // _json
+    using namespace nlohmann::literals;
+    std::string str = R"({"name":"Niels","list":[1,2,3],"object":{"currency":"USD","value":42.99}})";
+    Json str_ = R"({"name":"Niels","list":[1,2,3],"object":{"currency":"USD","value":42.99}})"_json;
+    std::cout << "str_: " << str_.dump() << std::endl;
+    std::cout << "str: " << Json::parse(str) << std::endl; // parse(str, nullptr, true, true) 1.para 2.callback 3.message analyze 4.comments ignore
+}
+
 int main()
 {
-    useTemplate();
+    useJson();
+
     std::cout << "----Hello, Cpp!----" << std::endl;
     return 0;
 }

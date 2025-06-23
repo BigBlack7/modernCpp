@@ -2,6 +2,7 @@
 
 // output&input
 #include <iostream>
+#include <fstream>
 
 // utility
 #include <exception>
@@ -25,3 +26,6 @@
 #include "memory/zMemoryPool.hpp"
 
 #include "template/sfinae.hpp"
+
+// external
+#include <nlohmann/json.hpp>
