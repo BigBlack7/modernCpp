@@ -5,6 +5,7 @@
 #include <typeinfo>
 #include <concepts>
 
+// normal
 template <typename T, typename U>
 class Pair
 {
@@ -19,6 +20,8 @@ private:
     T first;
     U second;
 };
+
+// partial specialization
 template <typename T, typename U>
 class Pair<T *, U *>
 {
@@ -33,6 +36,8 @@ private:
     T first;
     U *second;
 };
+
+// full specialization
 template <typename U>
 class Pair<std::string, U *>
 {
@@ -259,3 +264,40 @@ struct typeAt<TypeList<Head, Tail...>, N>
 {
     using type = typename typeAt<TypeList<Tail...>, N - 1>::type;
 };
+
+// forwarding reference
+template <typename T>
+void check_reference(T &&x)
+{
+    // T normal    -> T&& rvr
+    // T reference -> T&& lvr
+    std::cout << std::boolalpha;
+    std::cout << "T is lval_r: " << std::is_lvalue_reference<T>::value << std::endl;
+    std::cout << "T is rval_r: " << std::is_rvalue_reference<T>::value << std::endl;
+    std::cout << "T is rval  : " << std::is_rvalue_reference<T &&>::value << std::endl;
+    std::cout << "x is lval_r: " << std::is_lvalue_reference<decltype(x)>::value << std::endl;
+    std::cout << "x is rval_r: " << std::is_rvalue_reference<decltype(x)>::value << std::endl;
+}
+
+class Person
+{
+public:
+    std::string name;
+    int age;
+
+    Person(const std::string &n, int a) : name(n), age(a)
+    {
+        std::cout << "Constructed Person(const std::string&, int)" << std::endl;
+    }
+
+    Person(std::string &&n, int a) : name(std::move(n)), age(a)
+    {
+        std::cout << "Constructed Person(std::string&&, int)" << std::endl;
+    }
+};
+
+template <typename T, typename... Args>
+T create(Args &&...args)
+{
+    return T(std::forward<Args>(args)...);
+}

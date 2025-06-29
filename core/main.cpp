@@ -206,12 +206,113 @@ void useJson()
     Json str_ = R"({"name":"Niels","list":[1,2,3],"object":{"currency":"USD","value":42.99}})"_json;
     std::cout << "str_: " << str_.dump() << std::endl;
     std::cout << "str: " << Json::parse(str) << std::endl; // parse(str, nullptr, true, true) 1.para 2.callback 3.message analyze 4.comments ignore
+    std::cout << "---------------------------------------------------" << std::endl;
+    double node = j["pi"];
+    std::cout << typeid(node).name() << std::endl;
+    std::string n;
+    j["name"].get_to(n);
+    std::cout << n << std::endl;
+    std::cout << j["pi"].get<double>() << ", " << j["name"].get<std::string>() << std::endl;
+}
+
+void useLRVals()
+{
+    std::cout << std::boolalpha;
+    std::string str = "rendering";
+    std::string &lr = str;
+    std::string &&rr = "renderer";
+    // if use decltype((str)), (str) will be considered as a lvalue expression
+    // std::cout << "l_val: " << std::is_lvalue_reference<decltype(str)>::value << std::endl;
+    // std::cout << "r_val: " << std::is_rvalue_reference<decltype("render")>::value << std::endl;
+    // std::cout << "l_val_r: " << std::is_lvalue_reference<decltype(lr)>::value << std::endl;
+    // std::cout << "r_val_r: " << std::is_rvalue_reference<decltype(rr)>::value << std::endl;
+    // std::cout << "----------------" << std::endl;
+    // check_reference(std::forward<std::string&&>(str));
+    // std::cout << "----------------" << std::endl;
+    // check_reference(std::move(rr));
+    // std::cout << "----------------" << std::endl;
+    // check_reference(2);
+    Person p1 = create<Person>(str, 18);
+    Person p2 = create<Person>("render", 23);
+}
+
+void useSingleton()
+{
+    std::mutex mtx;
+    std::thread t1([&]()
+                   {
+        std::lock_guard<std::mutex> lock(mtx);
+        std::cout << "t1: " << Singleton2::getInstance() << std::endl; });
+
+    std::thread t2([&]()
+                   {
+        std::lock_guard<std::mutex> lock(mtx);
+        std::cout << "t2: " << Singleton2::getInstance() << std::endl; });
+
+    t1.join();
+    t2.join();
+}
+
+void useIO()
+{
+    // write
+    std::ofstream outfile("../../../outfile.txt");
+    if (!outfile)
+    {
+        std::cerr << "open file failed" << std::endl;
+        return;
+    }
+    outfile << "zmh.\n";
+    outfile << "age: " << 18 << std::endl;
+    outfile << "order: " << "NO.1" << std::endl;
+    outfile.close();
+
+    // read
+    std::ifstream infile("../../../outfile.txt");
+    if (!infile)
+    {
+        std::cerr << "open file failed" << std::endl;
+        return;
+    }
+    std::string line;
+    while (std::getline(infile, line))
+    {
+        std::cout << line << std::endl;
+    }
+    infile.close();
+
+    // add
+    std::fstream addfile("../../../outfile.txt", std::ios::in | std::ios::out | std::ios::app);
+    if (!addfile)
+    {
+        std::cerr << "open file failed" << std::endl;
+        return;
+    }
+    addfile << "GPA: A+\n";
+    addfile.close();
+
+    // ss
+    std::stringstream ss;
+    ss << "zmh, " << "good boy.";
+    std::cout << ss.str() << std::endl;
+
+    // os
+    std::ostringstream os;
+    os << "zmh, " << "good boy.";
+    std::cout << os.str() << std::endl;
+}
+
+void useLogger()
+{
+    Logger logger("../../../log.txt");
+    logger.log(LogLevel::Info,"zmh, {} years old, is NO.{}, use weapoon {}.", 18.5, 1, "world");
+
 }
 
 int main()
 {
-    useJson();
+    useLogger();
 
-    std::cout << "----Hello, Cpp!----" << std::endl;
+    std::cout << "----------------Hello, Cpp!----------------" << std::endl;
     return 0;
 }

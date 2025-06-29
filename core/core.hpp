@@ -6,6 +6,10 @@
 
 // utility
 #include <exception>
+#include <utility>
+#include <typeinfo>
+#include <thread>
+#include <mutex>
 
 // stl
 #include <string>
@@ -25,7 +29,11 @@
 
 #include "memory/zMemoryPool.hpp"
 
-#include "template/sfinae.hpp"
+#include "modern/sfinae.hpp"
+
+#include "designPattern/singleton.hpp"
+
+#include "logger/logger.hpp"
 
 // external
 #include <nlohmann/json.hpp>
