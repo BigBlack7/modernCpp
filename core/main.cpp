@@ -321,9 +321,19 @@ void useGLM()
     std::cout << "light: " << light.x << ", " << light.y << ", " << light.z << std::endl;
 }
 
+void useSpdlog()
+{
+    spdlog::set_level(spdlog::level::debug);
+    SPDLOG_DEBUG("debug");
+    SPDLOG_INFO("info");
+    SPDLOG_WARN("warn");
+    SPDLOG_ERROR("error");
+}
+
+
 int main()
 {
-    useGLM();
+    useSpdlog();
 
     std::cout << "----------------Hello, Cpp!----------------" << std::endl;
     return 0;

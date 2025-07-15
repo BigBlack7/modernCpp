@@ -6,4 +6,5 @@ target_link_libraries(
     cpp PRIVATE
     nlohmann_json::nlohmann_json
     glm
+    spdlog::spdlog
 )

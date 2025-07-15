@@ -38,3 +38,4 @@
 // external
 #include <nlohmann/json.hpp>
 #include <glm/glm.hpp>
+#include <spdlog/spdlog.h>

@@ -14,3 +14,4 @@ add_subdirectory(core)
 
 add_subdirectory(external/json)
 add_subdirectory(external/glm)
+add_subdirectory(external/spdlog)
