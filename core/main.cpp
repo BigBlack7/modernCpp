@@ -181,6 +181,11 @@ void useTemplate()
         using third_type = typeAt<list, 2>::type;
         std::cout << "third_type: " << typeid(third_type).name() << std::endl;
     }
+    {
+        // CRTP
+        GetCommand cmd;
+        cmd.execute();
+    }
 }
 
 void useJson()
@@ -305,13 +310,20 @@ void useIO()
 void useLogger()
 {
     Logger logger("../../../log.txt");
-    logger.log(LogLevel::Info,"zmh, {} years old, is NO.{}, use weapoon {}.", 18.5, 1, "world");
+    logger.log(LogLevel::Info, "zmh, {} years old, is NO.{}, use weapoon {}.", 18.5, 1, "world");
+}
 
+void useGLM()
+{
+    glm::vec3 normal(0, 1, 0);
+    glm::vec3 view(-0.707107, 0.707107, 0);
+    glm::vec3 light = -view + 2.f * glm::dot(view, normal) * normal;
+    std::cout << "light: " << light.x << ", " << light.y << ", " << light.z << std::endl;
 }
 
 int main()
 {
-    useLogger();
+    useGLM();
 
     std::cout << "----------------Hello, Cpp!----------------" << std::endl;
     return 0;

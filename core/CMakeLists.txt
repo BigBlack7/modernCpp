@@ -5,4 +5,5 @@ add_executable(cpp ${CORE})
 target_link_libraries(
     cpp PRIVATE
     nlohmann_json::nlohmann_json
+    glm
 )

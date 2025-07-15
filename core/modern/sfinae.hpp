@@ -301,3 +301,23 @@ T create(Args &&...args)
 {
     return T(std::forward<Args>(args)...);
 }
+
+// CRTP
+template <typename Derived>
+class Command
+{
+public:
+    void execute()
+    {
+        static_cast<Derived *>(this)->executeImpl();
+    }
+};
+
+class GetCommand : public Command<GetCommand>
+{
+public:
+    void executeImpl()
+    {
+        std::cout << "GetCommand::executeImpl()" << std::endl;
+    }
+};

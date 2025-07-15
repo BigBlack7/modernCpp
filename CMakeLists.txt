@@ -13,3 +13,4 @@ set(CMAKE_BUILD_PARALLEL_LEVEL ${N})
 add_subdirectory(core)
 
 add_subdirectory(external/json)
+add_subdirectory(external/glm)
