@@ -10,6 +10,7 @@
 #include <typeinfo>
 #include <thread>
 #include <mutex>
+#include <chrono>
 
 // stl
 #include <string>
@@ -34,6 +35,8 @@
 #include "designPattern/singleton.hpp"
 
 #include "logger/logger.hpp"
+
+#include "threadPool/threadPool.hpp"
 
 // external
 #include <nlohmann/json.hpp>

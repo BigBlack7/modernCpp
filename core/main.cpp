@@ -330,10 +330,54 @@ void useSpdlog()
     SPDLOG_ERROR("error");
 }
 
+void useThreadPool()
+{
+    ThreadPool pool;
+    pool.setMode(ThreadMode::CACHE);
+    pool.start(4);
+    
+    using uLong = unsigned long long;
+    class Test : public Task
+    {
+    public:
+        Test(int begin, int end) : mBegin(begin), mEnd(end) {}
+        Any run() override
+        {
+
+            std::cout << "test begin:" << std::this_thread::get_id() << std::endl;
+            uLong sum = 0;
+            for (uLong i = mBegin; i <= mEnd; i++)
+            {
+                sum += i;
+            }
+            std::cout << "test end:" << std::this_thread::get_id() << std::endl;
+            return sum;
+        }
+        int mBegin;
+        int mEnd;
+    };
+
+    Result res1 = pool.submitTask(std::make_shared<Test>(1, 100000000));
+    uLong sum1 = res1.get().cast<uLong>();
+
+    Result res2 = pool.submitTask(std::make_shared<Test>(100000001, 200000000));
+    uLong sum2 = res2.get().cast<uLong>();
+
+    std::cout << "sum1: " << sum1 << std::endl;
+    std::cout << "sum2: " << sum2 << std::endl;
+    std::cout << "sum3: " << sum1 + sum2 << std::endl;
+
+    uLong sum = 0;
+    for (uLong i = 1; i <= 200000000; i++)
+    {
+        sum += i;
+    }
+    std::cout << "sum: " << sum << std::endl;
+}
 
 int main()
 {
-    useSpdlog();
+    useThreadPool();
 
     std::cout << "----------------Hello, Cpp!----------------" << std::endl;
     return 0;
